@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cy-rating-check
+  namespace: default
+  labels:
+    name: cy-rating-check
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: cy-rating-check
+  template:
+    metadata:
+      name: cy-rating-check 
+      labels:
+        name: cy-rating-check
+    spec:
+      containers:
+        - name: webhook
+          image: prondzyn/cy-rating-check-k8s-webhook:1.4.2
+          imagePullPolicy: Always
+          args:
+            - -alsologtostderr
+            - --log_dir=/
+            - -v=10
+            - 2>&1
+          env:
+            - name: CY_RATING_CHECK_ACCESS_TOKEN
+              value: "${ACCESS_TOKEN}"
+            - name: CY_RATING_CHECK_SECRET_TOKEN
+              value: "${SECRET_TOKEN}"
+            - name: CY_RATING_ACCEPTANCE_THRESHOLD
+              value: "15.6789"
+          resources:
+            limits:
+              memory: 50Mi
+              cpu: 300m
+            requests:
+              memory: 00Mi
+              cpu: 300m
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/certs
+              readOnly: true
+            - name: logs
+              mountPath: /tmp
+            - name: ca-certs
+              mountPath: /etc/ssl/certs
+              readOnly: true
+          securityContext:
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: cy-rating-check
+        - name: logs
+          emptyDir: {}
+        - name: ca-certs
+          hostPath:
+            path: /etc/ssl/certs

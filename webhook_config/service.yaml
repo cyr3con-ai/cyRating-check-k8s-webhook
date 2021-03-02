@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cy-rating-check
+  namespace: default
+  labels:
+    name: cy-rating-check
+spec:
+  ports:
+  - name: webhook
+    port: 443
+    targetPort: 8080
+  selector:
+    name: cy-rating-check 
