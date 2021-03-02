@@ -8,6 +8,11 @@
 
 `cd cyRating-check-k8s-webhook`
 
+### Give executable permissions to the files using following commands
+1. `sudo chmod +x ./setup.sh`
+2. `sudo chmod +x certs/generate.sh`
+3. `sudo chmod +x auth/generate.sh`
+
 NOTE: Before running setup.sh, Please contact CYR3CON Team to get you access token and secret token pair as it will be required while running this script.
 
 Access token and secret token will be asked after 3rd step.
