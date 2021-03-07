@@ -69,6 +69,7 @@ To update configuration, ex. the accepted threshold value:
 
 If you see certification issue stating `x509: certificate has expired or is not yet valid`:
 Perform the following steps to resolve the issue by refreshing cert
+
 1.`kubectl delete secret cy-rating-check`
 2.`./certs/generate.sh`
 3.`kubectl create secret generic cy-rating-check -n default --from-file=key.pem=certs/webhook-key.pem --from-file=cert.pem=certs/webhook-crt.pem`
