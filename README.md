@@ -64,3 +64,15 @@ To update configuration, ex. the accepted threshold value:
 3. change configuration files as needed
 4. apply deployment configuration: `kubectl apply -f webhook_config/deployment.yaml`
 5. apply webhook configuration: `kubectl apply -f webhook_config/webhook.yaml`
+
+## Troubleshooting
+
+If you see certification issue stating `x509: certificate has expired or is not yet valid`:
+Perform the following steps to resolve the issue by refreshing cert
+1.`kubectl delete secret cy-rating-check`
+2.`./certs/generate.sh`
+3.`kubectl create secret generic cy-rating-check -n default --from-file=key.pem=certs/webhook-key.pem --from-file=cert.pem=certs/webhook-crt.pem`
+4.`kubectl delete -f webhook_config/webhook.yaml`
+5.`kubectl delete -f webhook_config/deployment.yaml`
+6.`kubectl apply -f webhook_config/deployment.yaml`
+7.`kubectl apply -f webhook_config/webhook.yaml`
